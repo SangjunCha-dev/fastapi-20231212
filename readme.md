@@ -1,32 +1,3 @@
-## install
-
-```bash
-pip install fastapi
-pip install pydantic-settings
-pip install pydantic[dotenv]
-
-# db
-pip install sqlalchemy
-
-# 비동기 서버 실행
-pip install uvicorn
-
-# jwt
-pip install python-jose
-pip install passlib[bcrypt]
-
-# test
-pip install pytest
-pip install requests
-```
-
-## execute
-
-```bash
-
-```
-
-
 # FastAPI
 
 > FastAPI를 사용한 간단한 로그인 RestAPI 서버 입니다.
