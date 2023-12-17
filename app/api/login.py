@@ -28,9 +28,9 @@ def login_access_token(
     db: Session = Depends(get_db),
     form_data: OAuth2PasswordRequestForm = Depends(),
 ) -> Any:
-    '''
+    """
     OAuth2 호환 토큰 로그인
-    '''
+    """
     user = crud_user.authenticate(db, email=form_data.username, password=form_data.password)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
@@ -52,7 +52,7 @@ def login_access_token(
 def test_token(
     current_user: UserModel = Depends(get_current_user)
 ) -> Any:
-    '''
+    """
     access token 테스트
-    '''
+    """
     return current_user

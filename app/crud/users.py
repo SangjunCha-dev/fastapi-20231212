@@ -1,11 +1,11 @@
-from typing import Union, Any
+from typing import Union, Any, Optional
 
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
 from app.depends.security import get_password_hash, verify_password
 from app.models.users import UserModel
-from app.schemas.users import *
+from app.schemas.users import UserCreateSchema, UserUpdateSchema
 
 
 class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):  

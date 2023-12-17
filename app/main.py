@@ -7,7 +7,7 @@ from app.settings.base import settings
 from app.admin import users as admin_users
 from app.api import users, items, login
 from app.db.init_table import init_db
-from app.db.database import Base, engine, SessionLocal
+from app.db.database import Base, async_engine, AsyncSession
 
 
 @lru_cache
@@ -35,15 +35,17 @@ app.add_middleware(
 
 
 # database init
-Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+Base.metadata.drop_all(bind=async_engine)
+Base.metadata.create_all(bind=async_engine)
+
 
 def init() -> None:
-    '''
+    """
     Create first superuser
-    '''
-    db = SessionLocal()
+    """
+    db = AsyncSession()
     init_db(db)
+
 
 init()
 

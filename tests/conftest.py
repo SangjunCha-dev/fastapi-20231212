@@ -4,7 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.db.database import SessionLocal
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.settings.base import settings
 from app.main import app
 
@@ -32,7 +32,7 @@ def get_superuser_token_headers(client: TestClient) -> dict[str, str]:
 
 @pytest.fixture(scope="session")
 def db() -> Generator:
-    yield SessionLocal()
+    yield AsyncSession()
 
 
 @pytest.fixture(scope="module")
@@ -88,11 +88,11 @@ def authentication_token_from_email(
     client: TestClient,
     email: str,
 ) -> dict[str, str]:
-    '''
+    """
     Returns valid access_token from the email user
 
     user creation if user is not exist
-    '''
+    """
     password = random_str(32)
     user = crud_user.get_by_email(db, email=email)
     if not user:
@@ -127,4 +127,3 @@ def create_random_item(
     )
 
     return crud_item.create_with_owner(db, obj_in=item_in, owner_id=owner_id)
-

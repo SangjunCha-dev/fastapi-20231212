@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
 from app.models.items import ItemModel
-from app.schemas.items import *
+from app.schemas.items import ItemCreateSchema, ItemUpdateSchema
 
 
 class CRUDItem(CRUDBase[ItemModel, ItemCreateSchema, ItemUpdateSchema]):
@@ -25,7 +25,7 @@ class CRUDItem(CRUDBase[ItemModel, ItemCreateSchema, ItemUpdateSchema]):
             .all()
         )
 
-    def create_user_item(db: Session, item: ItemCreateSchema, user_id: int):
+    def create_user_item(self, db: Session, item: ItemCreateSchema, user_id: int):
         db_item = ItemModel(
             **item.dict(),
             owner_id=user_id,

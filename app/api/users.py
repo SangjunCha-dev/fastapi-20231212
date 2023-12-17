@@ -8,8 +8,7 @@ from app.depends.users import get_current_active_user
 from app.settings.base import settings
 from app.crud.users import crud_user
 from app.models.users import UserModel
-from app.schemas.users import *
-from app.schemas.items import *
+from app.schemas.users import UserSchema, UserCreateSchema, UserUpdateSchema
 
 
 router = APIRouter(
@@ -24,9 +23,9 @@ router = APIRouter(
 def get_user_me(
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     현재 사용자 정보 조회
-    '''
+    """
     return current_user
 
 
@@ -36,9 +35,9 @@ def create_user_public(
     db: Session = Depends(get_db),
     user_in: UserCreateSchema,
 ) -> Any:
-    '''
+    """
     사용자 회원 가입
-    '''
+    """
     if not settings.USERS_OPEN_REGISTRATION:
         raise HTTPException(status_code=403, detail="Open user registration is forbidden on this server")
     
@@ -57,9 +56,9 @@ def update_user(
     user_in: UserUpdateSchema,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     사용자 정보 수정
-    '''
+    """
     user = crud_user.get(db, id=current_user.id)
     if not user:
         raise HTTPException(status_code=404, detail="The user with this email does not exist in the system")

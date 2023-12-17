@@ -11,7 +11,7 @@ from app.crud.users import crud_user
 from app.schemas.token import TokenPayloadSchema
 
 reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl = settings.TOKEN_URL
+    tokenUrl=settings.TOKEN_URL
 )
 
 

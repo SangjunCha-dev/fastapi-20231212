@@ -1,24 +1,24 @@
-import secrets
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Test Fastapi"
 
-    # minutes * hours * days
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
-    TOKEN_URL = "/login/access-token"
+    # token
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # minutes * hours * days
+    TOKEN_URL: str = "/login/access-token"
 
     # database connection
-    DATABASE_USER: str = None
-    DATABASE_PASSWORD:str = None
-    DATABASE_HOST:str = None
-    DATABASE_PORT:str = None
-    DATABASE_NAME:str = None
+    DATABASE_USER: str = ""
+    DATABASE_PASSWORD: str = ""
+    DATABASE_HOST: str = ""
+    DATABASE_PORT: str = ""
+    DATABASE_NAME: str = ""
 
-    ALGORITHM = "HS256"
+    SQLALCHEMY_DATABASE_URL: str = ""
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".credentials/.env", extra='allow')
+
 
 settings = Settings()

@@ -22,9 +22,9 @@ router = APIRouter(
 def get_user_me(
     current_user: UserModel = Depends(get_current_active_superuser),
 ) -> Any:
-    '''
+    """
     현재 사용자 정보 조회
-    '''
+    """
     return current_user
 
 
@@ -35,9 +35,9 @@ def get_users(
     limit: int = 100, 
     current_user: UserModel = Depends(get_current_active_superuser),
 ) -> Any:
-    '''
+    """
     사용자 목록 조회(관리자 권한)
-    '''
+    """
     if not crud_user.is_superuser(current_user):
         raise HTTPException(status_code=400, detail="The user doesn't have enough privileges")
 
@@ -52,9 +52,9 @@ def create_user(
     user_in: UserCreateSchema,
     current_user: UserModel = Depends(get_current_active_superuser),
 ) -> Any:
-    '''
+    """
     사용자 추가(관리자 권한)
-    '''
+    """
     if not crud_user.is_superuser(current_user):
         raise HTTPException(status_code=400, detail="The user doesn't have enough privileges")
 
@@ -73,9 +73,9 @@ def get_user_by_id(
     user_id: int,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     user_id 사용자 정보 조회(관리자 권한)
-    '''
+    """
     user = crud_user.get(db, id=user_id)
     if user == current_user:
         return user
@@ -93,9 +93,9 @@ def update_user(
     user_in: UserUpdateSchema,
     current_user: UserModel = Depends(get_current_active_superuser),
 ) -> Any:
-    '''
+    """
     user_id 사용자 정보 수정(관리자 권한)
-    '''
+    """
     if not crud_user.is_superuser(current_user):
         raise HTTPException(status_code=400, detail="The user doesn't have enough privileges")
 

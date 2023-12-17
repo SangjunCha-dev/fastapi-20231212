@@ -8,7 +8,7 @@ from app.depends.users import get_current_active_user
 from app.crud.items import crud_item
 from app.crud.users import crud_user
 from app.models.users import UserModel
-from app.schemas.items import *
+from app.schemas.items import ItemSchema, ItemCreateSchema, ItemUpdateSchema
 
 router = APIRouter(
     prefix="/items",
@@ -25,9 +25,9 @@ def get_items(
     limit: int = 100, 
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     제품 목록 조회
-    '''
+    """
     if crud_user.is_superuser(current_user):
         items = crud_item.get_multi(db, skip=skip, limit=limit)
     else:
@@ -43,9 +43,9 @@ def get_item(
     id: int,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     제품 정보 조회
-    '''
+    """
     item = crud_item.get(db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
@@ -62,9 +62,9 @@ def create_item(
     item_in: ItemCreateSchema,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     제품 정보 등록
-    '''
+    """
     item = crud_item.create_with_owner(db, obj_in=item_in, owner_id=current_user.id)
     return item
 
@@ -77,9 +77,9 @@ def update_item(
     item_in: ItemUpdateSchema,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     제품 정보 수정
-    '''
+    """
     item = crud_item.get(db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
@@ -97,9 +97,9 @@ def delete_item(
     id: int,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
-    '''
+    """
     제품 정보 삭제
-    '''
+    """
     item = crud_item.get(db, id=id)
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")

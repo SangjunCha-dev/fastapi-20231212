@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
-from .items import ItemSchema
+from app.schemas.items import ItemSchema
 
 
 class UserBase(BaseModel):
@@ -76,6 +76,7 @@ class UserSchema(UserInDBBase):
                 "items": []
             }
         }
+
 
 class UserInDB(UserInDBBase):
     hashed_password: str

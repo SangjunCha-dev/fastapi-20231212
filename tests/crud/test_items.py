@@ -7,10 +7,10 @@ from tests.utils.common import random_str, random_int
 
 
 def test_create_item(db: Session) -> None:
-    name=random_str(20)
-    description=random_str(100)
-    price=random_int(1000, 100000)
-    quantity=random_int(10, 100)
+    name = random_str(20)
+    description = random_str(100)
+    price = random_int(1000, 100000)
+    quantity = random_int(10, 100)
 
     item_in = ItemCreateSchema(
         name=name,
@@ -30,10 +30,10 @@ def test_create_item(db: Session) -> None:
 
 
 def test_get_item(db: Session) -> None:
-    name=random_str(20)
-    description=random_str(100)
-    price=random_int(1000, 100000)
-    quantity=random_int(10, 100)
+    name = random_str(20)
+    description = random_str(100)
+    price = random_int(1000, 100000)
+    quantity = random_int(10, 100)
 
     item_in = ItemCreateSchema(
         name=name,
@@ -56,10 +56,10 @@ def test_get_item(db: Session) -> None:
 
 
 def test_update_item(db: Session) -> None:
-    name=random_str(20)
-    description=random_str(100)
-    price=random_int(1000, 100000)
-    quantity=random_int(10, 100)
+    name = random_str(20)
+    description = random_str(100)
+    price = random_int(1000, 100000)
+    quantity = random_int(10, 100)
 
     item_in = ItemCreateSchema(
         name=name,
@@ -70,10 +70,10 @@ def test_update_item(db: Session) -> None:
     user = create_random_user(db)
     item = crud_item.create_with_owner(db=db, obj_in=item_in, owner_id=user.id)
 
-    new_name=random_str(20)
+    new_name = random_str(20)
     new_description = random_str(100)
-    new_price=random_int(1000, 100000)
-    new_quantity=random_int(10, 100)
+    new_price = random_int(1000, 100000)
+    new_quantity = random_int(10, 100)
 
     item_update = ItemUpdateSchema(
         name=new_name,
@@ -92,10 +92,10 @@ def test_update_item(db: Session) -> None:
 
 
 def test_delete_item(db: Session) -> None:
-    name=random_str(20)
-    description=random_str(100)
-    price=random_int(1000, 100000)
-    quantity=random_int(10, 100)
+    name = random_str(20)
+    description = random_str(100)
+    price = random_int(1000, 100000)
+    quantity = random_int(10, 100)
 
     item_in = ItemCreateSchema(
         name=name,

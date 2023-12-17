@@ -1,4 +1,3 @@
-import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
@@ -53,7 +52,7 @@ def test_create_user_duplicate_email(
     email = random_email()
     password = random_str(32)
     name = random_str(20)
-    age = random_str(10, 100)
+    age = random_int(10, 100)
     user_in = UserCreateSchema(
         email=email, 
         password=password,

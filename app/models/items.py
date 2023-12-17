@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from app.db.database import Base
 
 if TYPE_CHECKING:
-    from .users import UserModel
+    from app.models.users import UserModel
 
 
 class ItemModel(Base):
