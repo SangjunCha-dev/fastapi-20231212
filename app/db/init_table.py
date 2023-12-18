@@ -1,11 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.settings.base import settings
 from app.crud.users import crud_user
 from app.schemas.users import UserCreateSchema
+from app.settings.base import settings
 
 
-def init_db(db: AsyncSession) -> None:
+async def init_test_user(db: AsyncSession) -> None:
     """
     테스트 계정 생성
     """
@@ -16,7 +16,7 @@ def init_db(db: AsyncSession) -> None:
             password=settings.FIRST_SUPERUSER_PASSWORD,
             is_superuser=True,
         )
-        crud_user.create(db, obj_in=user_in)
+        await crud_user.create(db, obj_in=user_in)
 
     # 테스트 계정 생성
     if not crud_user.get_by_email(db, email=settings.TEST_USER_EMAIL):
@@ -25,4 +25,4 @@ def init_db(db: AsyncSession) -> None:
             password=settings.TEST_USER_PASSWORD,
             is_superuser=False,
         )
-        crud_user.create(db, obj_in=user_in)
+        await crud_user.create(db, obj_in=user_in)

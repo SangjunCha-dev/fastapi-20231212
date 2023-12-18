@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.settings.base import settings
 from app.admin import users as admin_users
 from app.api import users, items, login
-from app.db.init_table import init_db
+from app.db.init_table import init_test_user
 from app.db.database import Base, async_engine, AsyncSession
 
 
@@ -34,20 +34,15 @@ app.add_middleware(
 )
 
 
-# database init
-Base.metadata.drop_all(bind=async_engine)
-Base.metadata.create_all(bind=async_engine)
+@app.on_event("startup")
+async def init_db():
+    # init table
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
 
-
-def init() -> None:
-    """
-    Create first superuser
-    """
     db = AsyncSession()
-    init_db(db)
-
-
-init()
+    await init_test_user(db)
 
 
 @app.get("/")
