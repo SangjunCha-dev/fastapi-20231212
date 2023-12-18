@@ -18,6 +18,11 @@ class Settings(BaseSettings):
 
     SQLALCHEMY_DATABASE_URL: str = ""
 
+    CORS_ORIGINS: list = []
+
+    # test user
+    FIRST_SUPERUSER_EMAIL: str = ""
+
     model_config = SettingsConfigDict(env_file=".credentials/.env", extra='allow')
 
 

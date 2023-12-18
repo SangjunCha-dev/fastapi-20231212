@@ -17,7 +17,7 @@ def get_settings():
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    dependencies=Depends(get_settings),
+    dependencies=[Depends(get_settings)],
 )
 
 app.include_router(login.router)
