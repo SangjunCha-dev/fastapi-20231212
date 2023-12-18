@@ -11,17 +11,22 @@
 ```bash
 pip install fastapi
 pip install pydantic-settings
-pip install pydantic[dotenv]
+pip install "pydantic[dotenv]"
+pip install "pydantic[email]"
+pip install python-multipart
 
 # db
 pip install sqlalchemy
+# async sqlite
+pip install aiosqlite
+pip install greenlet
 
 # 비동기 서버 실행
 pip install uvicorn
 
 # jwt
 pip install python-jose
-pip install passlib[bcrypt]
+pip install "passlib[bcrypt]"
 
 # test
 pip install pytest
