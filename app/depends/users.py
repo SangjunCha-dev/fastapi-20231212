@@ -5,7 +5,7 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from app.settings.base import settings
-from app.db.database import get_session
+from app.db.database import get_db_session
 from app.models.users import UserModel
 from app.crud.users import crud_user
 from app.schemas.token import TokenPayloadSchema
@@ -16,7 +16,7 @@ reusable_oauth2 = OAuth2PasswordBearer(
 
 
 def get_current_user(
-    db: Session = Depends(get_session),
+    db: Session = Depends(get_db_session),
     token: str = Depends(reusable_oauth2),
 ) -> UserModel:
     try:

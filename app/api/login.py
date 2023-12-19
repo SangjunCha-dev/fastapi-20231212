@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.depends.security import create_access_token
 from app.settings.base import settings
 from app.depends.users import get_current_user
-from app.db.database import get_session
+from app.db.database import get_db_session
 from app.crud.users import crud_user
 from app.models.users import UserModel
 from app.schemas.token import TokenSchema
@@ -25,7 +25,7 @@ router = APIRouter(
 
 @router.post("/access-token", status_code=201, response_model=TokenSchema)
 def login_access_token(
-    db: Session = Depends(get_session),
+    db: Session = Depends(get_db_session),
     form_data: OAuth2PasswordRequestForm = Depends(),
 ) -> Any:
     """

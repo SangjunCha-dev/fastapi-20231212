@@ -13,7 +13,7 @@ class UserBase(BaseModel):
     is_superuser: bool = Field(False, title="관리자 여부")
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "email": "tester1@example.com",
                 "name": "tester1",
@@ -27,7 +27,7 @@ class UserCreateSchema(UserBase):
     password: str = Field(..., title="비밀번호")
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "email": "tester1@example.com",
                 "password": "password111",
@@ -43,7 +43,7 @@ class UserUpdateSchema(BaseModel):
     age: Optional[int]
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "password": "password222",
                 "name": "tester2",
@@ -56,7 +56,7 @@ class UserInDBBase(UserBase):
     id: Optional[int] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserSchema(UserInDBBase):
@@ -65,7 +65,7 @@ class UserSchema(UserInDBBase):
     items: list[ItemSchema] = []
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "email": "tester1@example.com",
                 "name": "tester1",

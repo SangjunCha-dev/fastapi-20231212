@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.db.database import get_session
+from app.db.database import get_db_session
 from app.depends.users import get_current_active_user
 from app.crud.items import crud_item
 from app.crud.users import crud_user
@@ -20,7 +20,7 @@ router = APIRouter(
 
 @router.get("", status_code=200, response_model=list[ItemSchema])
 def get_items(
-    db: Session = Depends(get_session),
+    db: Session = Depends(get_db_session),
     skip: int = 0, 
     limit: int = 100, 
     current_user: UserModel = Depends(get_current_active_user),
@@ -39,7 +39,7 @@ def get_items(
 @router.get("/{id}", status_code=200, response_model=ItemSchema)
 def get_item(
     *,
-    db: Session = Depends(get_session),
+    db: Session = Depends(get_db_session),
     id: int,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
@@ -58,7 +58,7 @@ def get_item(
 @router.post("", status_code=201, response_model=ItemSchema)
 def create_item(
     *, 
-    db: Session = Depends(get_session),
+    db: Session = Depends(get_db_session),
     item_in: ItemCreateSchema,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
@@ -72,7 +72,7 @@ def create_item(
 @router.put("/{id}", status_code=200, response_model=ItemSchema)
 def update_item(
     *,
-    db: Session = Depends(get_session),
+    db: Session = Depends(get_db_session),
     id: int,
     item_in: ItemUpdateSchema,
     current_user: UserModel = Depends(get_current_active_user),
@@ -93,7 +93,7 @@ def update_item(
 @router.delete("/{id}", status_code=200, response_model=ItemSchema)
 def delete_item(
     *,
-    db: Session = Depends(get_session),
+    db: Session = Depends(get_db_session),
     id: int,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:

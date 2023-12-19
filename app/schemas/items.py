@@ -10,7 +10,7 @@ class ItemBase(BaseModel):
     quantity: Optional[int] = Field(0, title="수량")
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "제품 이름1",
                 "description": "제품 설명문1",
@@ -26,7 +26,7 @@ class ItemCreateSchema(ItemBase):
 
 class ItemUpdateSchema(ItemBase):
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "제품 이름2",
                 "description": "제품 설명문2",
@@ -42,12 +42,12 @@ class ItemInDBBase(ItemBase):
     owner_id: int = Field(..., title="판매자 ID")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ItemSchema(ItemInDBBase):
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "제품 이름1",
                 "description": "제품 설명문1",
