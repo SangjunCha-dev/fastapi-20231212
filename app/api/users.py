@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
-from app.db.database import get_db
+from app.db.database import get_session
 from app.depends.users import get_current_active_user
 from app.settings.base import settings
 from app.crud.users import crud_user
@@ -32,7 +32,7 @@ def get_user_me(
 @router.post("", status_code=201, response_model=UserSchema)
 def create_user_public(
     *,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_session),
     user_in: UserCreateSchema,
 ) -> Any:
     """
@@ -52,7 +52,7 @@ def create_user_public(
 @router.put("", status_code=200, response_model=UserSchema)
 def update_user(
     *, 
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_session),
     user_in: UserUpdateSchema,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:

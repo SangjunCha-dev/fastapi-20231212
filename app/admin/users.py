@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 
-from app.db.database import get_db
+from app.db.database import get_session
 from app.depends.users import get_current_active_user, get_current_active_superuser
 from app.crud.users import crud_user
 from app.models.users import *
@@ -30,7 +30,7 @@ def get_user_me(
 
 @router.get("/users", status_code=200, response_model=list[UserSchema])
 def get_users(
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_session),
     skip: int = 0, 
     limit: int = 100, 
     current_user: UserModel = Depends(get_current_active_superuser),
@@ -48,7 +48,7 @@ def get_users(
 @router.post("/users", status_code=201, response_model=UserSchema)
 def create_user(
     *,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_session),
     user_in: UserCreateSchema,
     current_user: UserModel = Depends(get_current_active_superuser),
 ) -> Any:
@@ -69,7 +69,7 @@ def create_user(
 @router.get("/users/{user_id}", status_code=200, response_model=UserSchema)
 def get_user_by_id(
     *,
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_session),
     user_id: int,
     current_user: UserModel = Depends(get_current_active_user),
 ) -> Any:
@@ -88,7 +88,7 @@ def get_user_by_id(
 @router.put("/users/{user_id}", status_code=200, response_model=UserSchema)
 def update_user(
     *, 
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_session),
     user_id: int,
     user_in: UserUpdateSchema,
     current_user: UserModel = Depends(get_current_active_superuser),
