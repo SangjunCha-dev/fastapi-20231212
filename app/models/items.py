@@ -11,13 +11,13 @@ if TYPE_CHECKING:
 
 
 class ItemModel(Base):
-    __tablename__ = "items"
+    __tablename__ = "item"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), index=True, nullable=False)
     description = Column(TEXT, index=True)
     price = Column(INTEGER(unsigned=True), nullable=False)
     quantity = Column(INTEGER(unsigned=True), nullable=False)
-    owner_id = Column(Integer, ForeignKey("users.id"))
 
-    owner = relationship("UserModel", back_populates="items")
+    user_id = Column(Integer, ForeignKey("user.id"))
+    user = relationship("UserModel", backref="item")

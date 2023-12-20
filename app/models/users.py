@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class UserModel(Base):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(50), unique=True, index=True, nullable=False)
@@ -21,4 +21,4 @@ class UserModel(Base):
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
 
-    items = relationship("ItemModel", back_populates="owner")
+    item = relationship("ItemModel", backref="user")
