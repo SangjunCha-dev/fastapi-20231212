@@ -7,7 +7,7 @@ from app.settings.base import settings
 from app.admin import users as admin_users
 from app.api import users, items, login
 from app.db.init_table import init_test_user
-from app.db.database import Base, async_engine, AsyncSession
+from app.db.database import Base, async_engine, get_db_session
 
 
 @lru_cache
@@ -41,8 +41,10 @@ async def init_db():
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
-    db = AsyncSession()
-    await init_test_user(db)
+    # db = get_db_session()
+    db = next(get_db_session())
+
+    await init_test_user(db=db)
 
 
 @app.get("/")

@@ -10,7 +10,7 @@ from app.settings.base import settings
 logger = logging.getLogger(__name__)
 
 
-async_engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URL)
+async_engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 async_session = async_sessionmaker(bind=async_engine, autoflush=False, expire_on_commit=False)
 
 Base = declarative_base()
