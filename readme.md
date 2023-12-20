@@ -56,6 +56,9 @@ uvicorn app.main:app
 
 # loop execute
 uvicorn app.main:app --reload
+
+# cumtom execute
+uvicorn app.main:app --port 8000 --workers 1
 ```
 
 ## 2. Swagger 접속
