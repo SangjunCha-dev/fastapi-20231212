@@ -2,8 +2,8 @@ import logging
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import declarative_base
 
 from app.settings.base import settings
 
@@ -17,7 +17,7 @@ Base = declarative_base()
 
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session() as session:
+    async with async_session.begin() as session:
         try:
             yield session
             await session.commit()

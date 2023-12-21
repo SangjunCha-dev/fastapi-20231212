@@ -41,10 +41,8 @@ async def init_db():
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
-    # db = get_db_session()
-    db = next(get_db_session())
-
-    await init_test_user(db=db)
+    async for db in get_db_session():
+        await init_test_user(db=db)
 
 
 @app.get("/")
