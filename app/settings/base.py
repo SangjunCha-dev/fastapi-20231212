@@ -22,7 +22,9 @@ class Settings(BaseSettings):
 
     # test user
     FIRST_SUPERUSER_EMAIL: str = ""
+    FIRST_SUPERUSER_PASSWORD: str = ""
     TEST_USER_EMAIL: str = ""
+    TEST_USER_PASSWORD: str = ""
 
     model_config = SettingsConfigDict(env_file=".credentials/.env", extra='allow')
 

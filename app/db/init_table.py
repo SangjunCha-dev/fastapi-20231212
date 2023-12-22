@@ -21,6 +21,8 @@ async def init_test_user(db: AsyncSession) -> None:
         user_in = UserCreateSchema(
             email=settings.FIRST_SUPERUSER_EMAIL,
             password=settings.FIRST_SUPERUSER_PASSWORD,
+            name="admin",
+            age="100",
             is_superuser=True,
         )
         await crud_user.create(db, obj_in=user_in)
@@ -30,6 +32,8 @@ async def init_test_user(db: AsyncSession) -> None:
         user_in = UserCreateSchema(
             email=settings.TEST_USER_EMAIL,
             password=settings.TEST_USER_PASSWORD,
+            name="test_user",
+            age="10",
             is_superuser=False,
         )
         await crud_user.create(db, obj_in=user_in)

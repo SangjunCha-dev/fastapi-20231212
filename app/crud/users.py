@@ -10,7 +10,7 @@ from app.schemas.users import UserCreateSchema, UserUpdateSchema
 
 
 class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):  
-    def create(self, db: AsyncSession, *, obj_in: UserCreateSchema) -> UserModel:
+    async def create(self, db: AsyncSession, *, obj_in: UserCreateSchema) -> UserModel:
         if not hasattr(obj_in, "is_active"):
             obj_in.is_active = True
         if not hasattr(obj_in, "is_superuser"):
@@ -26,8 +26,8 @@ class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):
         )
 
         db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
+        await db.commit()
+        await db.refresh(db_obj)
         return db_obj
 
     def update(self, db: AsyncSession, *, db_obj: UserModel, obj_in: Union[UserUpdateSchema, dict[str, Any]]
@@ -56,7 +56,8 @@ class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):
         result = await db.execute(
             select(UserModel).filter_by(email=email).limit(1)
         )
-        return result.scalar().first()
+        user = result.scalar()
+        return user.first() if user else None
 
     def is_active(self, user: UserModel) -> bool:
         return user.is_active

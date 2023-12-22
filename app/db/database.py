@@ -19,6 +19,8 @@ class Base(DeclarativeBase):
 
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
+    import asyncio
+
     async with async_session.begin() as session:
         try:
             yield session
@@ -27,3 +29,6 @@ async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
             logger.error(error, exc_info=True)
             await session.rollback()
             raise
+        finally:
+            await session.close()
+            await asyncio.shield(session.close())
