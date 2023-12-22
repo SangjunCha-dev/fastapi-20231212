@@ -1,24 +1,19 @@
-from typing import TYPE_CHECKING
-
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.dialects.mysql import INTEGER
 from sqlalchemy.orm import relationship
 
 from app.db.database import Base
 
-if TYPE_CHECKING:
-    from app.models.items import ItemModel
-
 
 class UserModel(Base):
     __tablename__ = "user"
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String(50), unique=True, index=True, nullable=False)
-    hashed_password = Column(String(255), nullable=False)
-    name = Column(String(20), index=True)
-    age = Column(INTEGER(display_width=3, unsigned=True))
-    is_active = Column(Boolean, default=True)
-    is_superuser = Column(Boolean, default=False)
+    id: int = Column(Integer, primary_key=True, index=True)
+    email: str = Column(String(50), unique=True, index=True, nullable=False)
+    hashed_password: str = Column(String(255), nullable=False)
+    name: str = Column(String(20), index=True)
+    age: int = Column(INTEGER(display_width=3, unsigned=True))
+    is_active: bool = Column(Boolean, default=True)
+    is_superuser: bool = Column(Boolean, default=False)
 
-    item = relationship("ItemModel", backref="user")
+    items = relationship("ItemModel", back_populates="user")
