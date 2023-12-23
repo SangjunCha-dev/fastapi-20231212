@@ -31,6 +31,7 @@ pip install "passlib[bcrypt]"
 # test
 pip install pytest
 pip install requests
+pip install httpx
 ```
 
 
