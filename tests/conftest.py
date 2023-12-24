@@ -4,11 +4,9 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.settings.base import settings
+from app.db.database import get_db_session
 from app.main import app
-
-
 from app.models.items import ItemModel
 from app.models.users import UserModel
 from app.schemas.items import ItemCreateSchema
@@ -32,7 +30,8 @@ def get_superuser_token_headers(client: TestClient) -> dict[str, str]:
 
 @pytest.fixture(scope="session")
 def db() -> Generator:
-    yield AsyncSession()
+    for db in get_db_session():
+        yield db
 
 
 @pytest.fixture(scope="module")

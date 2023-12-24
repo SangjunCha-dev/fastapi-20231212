@@ -1,7 +1,7 @@
 from typing import Union, Any, Optional
 
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
 from app.depends.security import get_password_hash, verify_password
@@ -10,7 +10,7 @@ from app.schemas.users import UserCreateSchema, UserUpdateSchema
 
 
 class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):  
-    async def create(self, db: AsyncSession, *, obj_in: UserCreateSchema) -> UserModel:
+    def create(self, db: Session, *, obj_in: UserCreateSchema) -> UserModel:
         if not hasattr(obj_in, "is_active"):
             obj_in.is_active = True
         if not hasattr(obj_in, "is_superuser"):
@@ -26,11 +26,11 @@ class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):
         )
 
         db.add(db_obj)
-        await db.commit()
-        await db.refresh(db_obj)
+        db.commit()
+        db.refresh(db_obj)
         return db_obj
 
-    def update(self, db: AsyncSession, *, db_obj: UserModel, obj_in: Union[UserUpdateSchema, dict[str, Any]]
+    def update(self, db: Session, *, db_obj: UserModel, obj_in: Union[UserUpdateSchema, dict[str, Any]]
                ) -> UserModel:
         if isinstance(obj_in, dict):
             update_data = obj_in
@@ -44,20 +44,19 @@ class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):
 
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
-    async def authenticate(self, db: AsyncSession, *, email: str, password: str) -> Optional[UserModel]:
-        user = await self.get_by_email(db, email=email)
+    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[UserModel]:
+        user = self.get_by_email(db, email=email)
         if not user:
             return None
         if not verify_password(password, user.hashed_password):
             return None
         return user
 
-    async def get_by_email(self, db: AsyncSession, *, email: str) -> Optional[UserModel]:
-        result = await db.execute(
+    def get_by_email(self, db: Session, *, email: str) -> Optional[UserModel]:
+        result = db.scalar(
             select(UserModel).filter_by(email=email).limit(1)
         )
-        user = result.scalar()
-        return user.first() if user else None
+        return result.first() if result else None
 
     def is_active(self, user: UserModel) -> bool:
         return user.is_active

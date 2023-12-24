@@ -7,7 +7,7 @@ from app.settings.base import settings
 from app.admin import users as admin_users
 from app.api import users, items, login
 from app.db.init_table import init_test_user
-from app.db.database import Base, async_engine, get_db_session
+from app.db.database import Base, engine, get_db_session
 
 
 @lru_cache
@@ -35,16 +35,14 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-async def init_db():
-    # init table
-    async with async_engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
+def init_db():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
 
-    async for db in get_db_session():
-        await init_test_user(db=db)
+    for db in get_db_session():
+        init_test_user(db=db)
 
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "Hello World"}

@@ -17,9 +17,6 @@ pip install python-multipart
 
 # db
 pip install sqlalchemy
-# async sqlite
-pip install aiosqlite
-pip install greenlet
 
 # 비동기 서버 실행
 pip install uvicorn

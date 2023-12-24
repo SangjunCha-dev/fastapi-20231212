@@ -16,8 +16,8 @@ class CRUDItem(CRUDBase[ItemModel, ItemCreateSchema, ItemUpdateSchema]):
         db.refresh(db_obj)
         return db_obj
 
-    async def get_multi_by_owner(self, db: Session, *, owner_id: int, skip: int = 0, limit: int = 100) -> list[ItemModel]:
-        return await (
+    def get_multi_by_owner(self, db: Session, *, owner_id: int, skip: int = 0, limit: int = 100) -> list[ItemModel]:
+        return (
             db.query(self.model)
             .filter(ItemModel.owner_id == owner_id)
             .offset(skip)

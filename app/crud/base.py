@@ -2,7 +2,7 @@ from typing import Any, Generic, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from app.db.database import Base
 
@@ -22,22 +22,30 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    async def get(self, db: AsyncSession, id: Any) -> Optional[ModelType]:
-        return await (
-            db.query(self.model)
-            .filter(self.model.id == id)
-            .first()
+    def get(self, db: Session, id: Any) -> Optional[ModelType]:
+        # return (
+        #     db.query(self.model)
+        #     .filter(self.model.id == id)
+        #     .first()
+        # )
+
+        result = db.scalars(
+            select(self.model)
+            .filter_by(self.model.id=id)
+            .limit(1)
         )
 
-    async def get_multi(self, db: AsyncSession, *, skip: int = 0, limit: int = 100) -> list[ModelType]:
-        return await (
+        return result.first() if result else None
+
+    def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100) -> list[ModelType]:
+        return (
             db.query(self.model)
             .offset(skip)
             .limit(limit)
             .all()
         )
 
-    def create(self, db: AsyncSession, *, obj_in: CreateSchemaType) -> ModelType:
+    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)  # type: ignore
         db.add(db_obj)
@@ -46,7 +54,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         return db_obj
 
-    def update(self, db: AsyncSession, *, db_obj: ModelType, obj_in: Union[UpdateSchemaType, dict[str, Any]]
+    def update(self, db: Session, *, db_obj: ModelType, obj_in: Union[UpdateSchemaType, dict[str, Any]]
                ) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):
@@ -64,10 +72,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         return db_obj
 
-    async def remove(self, db: AsyncSession, *, id: int) -> ModelType:
-        obj = await db.query(self.model).get(id)
+    def remove(self, db: Session, *, id: int) -> ModelType:
+        obj = db.query(self.model).get(id)
 
-        await db.delete(obj)
-        await db.commit()
+        db.delete(obj)
+        db.commit()
 
         return obj
