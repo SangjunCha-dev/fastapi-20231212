@@ -27,7 +27,7 @@ class CRUDItem(CRUDBase[ItemModel, ItemCreateSchema, ItemUpdateSchema]):
 
     def create_user_item(self, db: Session, item: ItemCreateSchema, user_id: int):
         db_item = ItemModel(
-            **item.dict(),
+            **item.model_dump(),
             owner_id=user_id,
         )
 

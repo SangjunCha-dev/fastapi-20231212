@@ -31,7 +31,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         result = db.scalars(
             select(self.model)
-            .filter_by(self.model.id=id)
+            .filter_by(self.model.id==id)
             .limit(1)
         )
 
@@ -60,7 +60,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
-            update_data = obj_in.dict(exclude_unset=True)
+            update_data = obj_in.model_dump(exclude_unset=True)
         
         for field in obj_data:
             if field in update_data:
