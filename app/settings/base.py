@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Test Fastapi"
+    SECRET_KEY: str = ""
 
     # token
     ALGORITHM: str = "HS256"
@@ -25,8 +26,13 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str = ""
     TEST_USER_EMAIL: str = ""
     TEST_USER_PASSWORD: str = ""
+    USERS_OPEN_REGISTRATION: bool = True
 
-    model_config = SettingsConfigDict(env_file=".credentials/.env", extra='allow')
+    model_config = SettingsConfigDict(
+        env_file='.credentials/.env',
+        extra='allow',
+        env_file_encoding='utf-8',
+    )
 
 
 settings = Settings()
