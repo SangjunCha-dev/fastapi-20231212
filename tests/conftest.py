@@ -112,11 +112,11 @@ def authentication_token_from_email(
 
 def create_random_item(
     db: Session,
-    owner_id: Optional[int] = None,
+    user_id: Optional[int] = None,
 ) -> ItemModel:
-    if owner_id is None:
+    if user_id is None:
         user = create_random_user(db)
-        owner_id = user.id
+        user_id = user.id
     
     item_in = ItemCreateSchema(
         name=random_str(32),
@@ -125,4 +125,4 @@ def create_random_item(
         quantity=random_int(10, 100),
     )
 
-    return crud_item.create_with_owner(db, obj_in=item_in, owner_id=owner_id)
+    return crud_item.create_with_user(db, obj_in=item_in, user_id=user_id)

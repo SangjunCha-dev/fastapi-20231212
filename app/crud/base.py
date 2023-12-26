@@ -1,8 +1,9 @@
 from typing import Any, Generic, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel
+from sqlalchemy import select
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 
 from app.db.database import Base
 
@@ -23,19 +24,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
 
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
-        # return (
-        #     db.query(self.model)
-        #     .filter(self.model.id == id)
-        #     .first()
-        # )
-
-        result = db.scalars(
-            select(self.model)
-            .filter_by(self.model.id==id)
-            .limit(1)
+        return db.scalar(
+            select(self.model).filter_by(id=id).limit(1)
         )
-
-        return result.first() if result else None
 
     def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100) -> list[ModelType]:
         return (

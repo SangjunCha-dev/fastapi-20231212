@@ -20,13 +20,13 @@ def test_create_item(db: Session) -> None:
     )
     user = create_random_user(db)
 
-    item = crud_item.create_with_owner(db=db, obj_in=item_in, owner_id=user.id)
+    item = crud_item.create_with_user(db=db, obj_in=item_in, user_id=user.id)
 
     assert item.name == name
     assert item.description == description
     assert item.price == price
     assert item.quantity == quantity
-    assert item.owner_id == user.id
+    assert item.user_id == user.id
 
 
 def test_get_item(db: Session) -> None:
@@ -42,7 +42,7 @@ def test_get_item(db: Session) -> None:
         quantity=quantity,
     )
     user = create_random_user(db)
-    item = crud_item.create_with_owner(db=db, obj_in=item_in, owner_id=user.id)
+    item = crud_item.create_with_user(db=db, obj_in=item_in, user_id=user.id)
 
     get_item = crud_item.get(db=db, id=item.id)
 
@@ -52,7 +52,7 @@ def test_get_item(db: Session) -> None:
     assert get_item.description == description
     assert get_item.price == price
     assert get_item.quantity == quantity
-    assert get_item.owner_id == user.id
+    assert get_item.user_id == user.id
 
 
 def test_update_item(db: Session) -> None:
@@ -68,7 +68,7 @@ def test_update_item(db: Session) -> None:
         quantity=quantity,
     )
     user = create_random_user(db)
-    item = crud_item.create_with_owner(db=db, obj_in=item_in, owner_id=user.id)
+    item = crud_item.create_with_user(db=db, obj_in=item_in, user_id=user.id)
 
     new_name = random_str(20)
     new_description = random_str(100)
@@ -88,7 +88,7 @@ def test_update_item(db: Session) -> None:
     assert updated_item.description == new_description
     assert updated_item.price == new_price
     assert updated_item.quantity == new_quantity
-    assert updated_item.owner_id == user.id
+    assert updated_item.user_id == user.id
 
 
 def test_delete_item(db: Session) -> None:
@@ -104,7 +104,7 @@ def test_delete_item(db: Session) -> None:
         quantity=quantity,
     )
     user = create_random_user(db)
-    item = crud_item.create_with_owner(db=db, obj_in=item_in, owner_id=user.id)
+    item = crud_item.create_with_user(db=db, obj_in=item_in, user_id=user.id)
 
     deleted_item = crud_item.remove(db=db, id=item.id)
     get_item = crud_item.get(db=db, id=item.id)
@@ -113,4 +113,4 @@ def test_delete_item(db: Session) -> None:
     assert deleted_item.id == item.id
     assert deleted_item.name == name
     assert deleted_item.description == description
-    assert deleted_item.owner_id == user.id
+    assert deleted_item.user_id == user.id

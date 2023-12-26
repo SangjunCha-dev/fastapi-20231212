@@ -28,7 +28,7 @@ def test_create_item(
     assert content["description"] == data["description"]
     assert content["price"] == data["price"]
     assert content["quantity"] == data["quantity"]
-    assert "owner_id" in content
+    assert "user_id" in content
 
 
 def test_get_item(
@@ -38,7 +38,7 @@ def test_get_item(
 ) -> None:
     user = crud_user.get_by_email(db, email=settings.TEST_USER_EMAIL)
 
-    item = create_random_item(db, owner_id=user.id)
+    item = create_random_item(db, user_id=user.id)
     response = client.get(f"/items/{item.id}", headers=normal_user_token_headers)
 
     assert response.status_code == 200
@@ -50,7 +50,7 @@ def test_get_item(
     assert content["description"] == item.description
     assert content["price"] == item.price
     assert content["quantity"] == item.quantity
-    assert content["owner_id"] == item.owner_id
+    assert content["user_id"] == item.user_id
 
 
 def test_get_items(
@@ -62,7 +62,7 @@ def test_get_items(
 
     count = 10
     for _ in range(count):
-        create_random_item(db, owner_id=user.id)
+        create_random_item(db, user_id=user.id)
 
     skip = 0
     limit = 5
@@ -78,7 +78,7 @@ def test_get_items(
         assert "description" in item
         assert "price" in item
         assert "quantity" in item
-        assert "owner_id" in item
+        assert "user_id" in item
 
 
 def test_update_item(
@@ -87,7 +87,7 @@ def test_update_item(
     normal_user_token_headers: dict,
 ) -> None:
     user = crud_user.get_by_email(db, email=settings.TEST_USER_EMAIL)
-    item = create_random_item(db, owner_id=user.id)
+    item = create_random_item(db, user_id=user.id)
     
     data = {
         "name": random_str(20),
@@ -113,7 +113,7 @@ def test_delete_item(
     normal_user_token_headers: dict,
 ) -> None:
     user = crud_user.get_by_email(db, email=settings.TEST_USER_EMAIL)
-    item = create_random_item(db, owner_id=user.id)
+    item = create_random_item(db, user_id=user.id)
 
     response = client.delete(f"/items/{item.id}", headers=normal_user_token_headers)
 

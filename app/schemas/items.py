@@ -39,7 +39,7 @@ class ItemUpdateSchema(ItemBase):
 class ItemInDBBase(ItemBase):
     id: int = Field(..., title="제품 ID")
     name: str = Field(..., title="제품 이름")
-    owner_id: int = Field(..., title="판매자 ID")
+    user_id: int = Field(..., title="판매자 ID")
 
     class Config:
         from_attributes = True
@@ -54,7 +54,7 @@ class ItemSchema(ItemInDBBase):
                 "price": 1000,
                 "quantity": 10,
                 "id": 1,
-                "owner_id": 1
+                "user_id": 1
             }
         }
 

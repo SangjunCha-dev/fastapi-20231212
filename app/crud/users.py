@@ -53,10 +53,9 @@ class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):
         return user
 
     def get_by_email(self, db: Session, *, email: str) -> Optional[UserModel]:
-        result = db.scalar(
+        return db.scalar(
             select(UserModel).filter_by(email=email).limit(1)
         )
-        return result.first() if result else None
 
     def is_active(self, user: UserModel) -> bool:
         return user.is_active
