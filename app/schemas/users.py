@@ -62,7 +62,7 @@ class UserInDBBase(UserBase):
 class UserSchema(UserInDBBase):
     id: int = Field(..., title="사용자 ID")
     is_active: bool = Field(..., title="계정 활성화")
-    item: list[ItemSchema] = []
+    items: list[ItemSchema] = []
 
     class Config:
         json_schema_extra = {
@@ -73,7 +73,7 @@ class UserSchema(UserInDBBase):
                 "is_active": True,
                 "is_superuser": False,
                 "id": 2,
-                "item": []
+                "items": []
             }
         }
 

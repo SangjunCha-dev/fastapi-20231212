@@ -104,9 +104,11 @@ def test_update_user(
 
     name = random_str(20)
     age = random_int(10, 100)
+    password = random_str(32)
     data = {
         "name": name,
         "age": age,
+        "password": password,
     }
 
     response = client.put(f"/admin/users/{get_user.id}", headers=superuser_token_headers, json=data)
