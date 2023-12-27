@@ -38,9 +38,9 @@ class UserCreateSchema(UserBase):
 
 
 class UserUpdateSchema(BaseModel):
-    password: Optional[str]
-    name: Optional[str]
-    age: Optional[int]
+    password: str = Field(..., title="비밀번호")
+    name: Optional[str] = Field(default=None, min_length=2, max_length=20, title="이름")
+    age: Optional[int] = Field(default=None, title="나이")
 
     class Config:
         json_schema_extra = {

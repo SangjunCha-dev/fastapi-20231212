@@ -106,8 +106,8 @@ def authentication_token_from_email(
     else:
         user_in_update = UserUpdateSchema(password=password)
         user = crud_user.update(db, db_obj=user, obj_in=user_in_update)
-    
-    return user_authentication_headers(client=client, email=email, password=password)
+
+    return user_authentication_headers(client=client, email=user.email, password=password)
 
 
 def create_random_item(
