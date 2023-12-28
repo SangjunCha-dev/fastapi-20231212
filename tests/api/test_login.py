@@ -28,6 +28,6 @@ def test_use_access_token(
     assert response_json["email"] == settings.FIRST_SUPERUSER_EMAIL
     assert "name" in response_json
     assert "age" in response_json
-    assert "item" in response_json
+    assert "items" in response_json
     assert "hashed_password" not in response_json
     assert "password" not in response_json

@@ -80,9 +80,11 @@ def test_update_user(
 ) -> None:
     name = random_str(20)
     age = random_int(10, 100)
+    password = random_str(32)
     data = {
         "name": name,
         "age": age,
+        "password": password,
     }
 
     response = client.put(f"/users", headers=normal_user_token_headers, json=data)
