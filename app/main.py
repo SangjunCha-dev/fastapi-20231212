@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from functools import lru_cache
 
 from fastapi import FastAPI, Depends
@@ -15,9 +16,21 @@ def get_settings():
     return settings
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    for db in get_db_session():
+        init_test_user(db=db)
+
+    yield
+
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     dependencies=[Depends(get_settings)],
+    lifespan=lifespan,
 )
 
 app.include_router(login.router)
@@ -32,15 +45,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("startup")
-def init_db():
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-
-    for db in get_db_session():
-        init_test_user(db=db)
 
 
 @app.get("/")
