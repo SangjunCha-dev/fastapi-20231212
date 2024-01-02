@@ -1,4 +1,5 @@
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
@@ -17,13 +18,12 @@ class CRUDItem(CRUDBase[ItemModel, ItemCreateSchema, ItemUpdateSchema]):
         return db_obj
 
     def get_multi_by_user(self, db: Session, *, user_id: int, skip: int = 0, limit: int = 100) -> list[ItemModel]:
-        return (
-            db.query(self.model)
-            .filter(ItemModel.user_id == user_id)
+        return db.scalars(
+            select(self.model)
+            .filter_by(user_id=user_id)
             .offset(skip)
             .limit(limit)
-            .all()
-        )
+        ).all()
 
     def create_user_item(self, db: Session, item: ItemCreateSchema, user_id: int):
         db_item = self.model(

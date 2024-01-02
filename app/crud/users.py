@@ -54,7 +54,7 @@ class CRUDUser(CRUDBase[UserModel, UserCreateSchema, UserUpdateSchema]):
 
     def get_by_email(self, db: Session, *, email: str) -> Optional[UserModel]:
         return db.scalar(
-            select(UserModel).filter_by(email=email).limit(1)
+            select(self.model).filter_by(email=email).limit(1)
         )
 
     def is_active(self, user: UserModel) -> bool:
