@@ -17,6 +17,7 @@ pip install python-multipart
 
 # db
 pip install sqlalchemy
+pip install alembic
 
 # 비동기 서버 실행
 pip install uvicorn
@@ -40,6 +41,16 @@ pip install httpx
 ```
 /.credentials/.env
 ```
+
+- alembic
+```
+# init
+alembic init app/migrations
+
+# generate migration script
+alembic revision --autogenerate -m "Initialize entity"
+```
+
 
 
 ---
