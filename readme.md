@@ -11,7 +11,6 @@
 ```bash
 pip install fastapi
 pip install pydantic-settings
-pip install "pydantic[dotenv]"
 pip install "pydantic[email]"
 pip install python-multipart
 
@@ -80,5 +79,5 @@ uvicorn app.main:app --port 8000 --workers 1
 ## 3. FastAPI 서버 테스트 실행
 
 ```bash
-pytest app/
+pytest tests/
 ```
